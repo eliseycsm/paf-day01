@@ -61,7 +61,9 @@ const makeQuery = (sql, pool) => {
         //init connection
         const conn = await pool.getConnection() //have to wait for connection to do next step
         try{
+            console.log("args", args)
             let results = await conn.query(sql, args || []) //results returned as [result, metadata]
+            console.log(results[0]);
             return results[0] 
         }catch(err){
             console.error(error)
@@ -101,7 +103,7 @@ app.post(`${COMMON_NAMESPACE}/rsvp`, (req, resp) =>{
     const bodyValue = req.body
     console.log("body ",bodyValue)
     saveOneRsvp([bodyValue.name, bodyValue.email,
-        bodyValue.phone, bodyValue.status, bodyValue.createdBy])
+        bodyValue.phone, bodyValue.attending, 1]) 
         .then((result) => { 
             resp.status(200).json(result)
         }).catch((error) => {
